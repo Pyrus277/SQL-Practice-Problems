@@ -1,4 +1,4 @@
---Q20 Show the total number of products in each category. Category names from Categories, 
+-- Q20 Show the total number of products in each category. Category names from Categories, 
 -- Product info from Products.
 SELECT
 	c.CategoryName,
