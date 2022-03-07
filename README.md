@@ -1,4 +1,4 @@
-# SQL-Practice-Problems
+# SQL_Practice_Problems
 
 A collection of the code created as I work through the book "SQL Practice Problems" by Sylvia Moestl Vasilik.
 
