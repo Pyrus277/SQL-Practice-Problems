@@ -38,11 +38,60 @@ GROUP BY c.CustomerID, c.CompanyName
 HAVING SUM(od.UnitPrice * Quantity) >= 15000
 ORDER BY TotalOrderAmount DESC
 -- Removing order ID collapsed the groupings allowing us to see the total order amounts!
+-- This allows us to group at the customer level and not the order level. 
+;
+
+-- Problem 34
+-- Change the answer from the previous problem to use the discount when calculating
+-- high value customers. 
+SELECT 
+	c.CustomerID
+	,c.CompanyName
+	,SUM(od.UnitPrice * Quantity) AS 'Totals Without Discount'
+	,SUM((od.UnitPrice * Quantity)*(1-Discount)) AS 'Totals With Discount'
+FROM Customers c  
+	JOIN Orders o ON c.CustomerID = o.CustomerID
+	JOIN OrderDetails od ON o.OrderID = od.OrderID
+WHERE YEAR(o.OrderDate) = 2016 
+GROUP BY c.CustomerID, c.CompanyName
+HAVING SUM((od.UnitPrice * Quantity)*(1-Discount)) >= 15000
+ORDER BY 'Totals With Discount' DESC
 ;
 
 SELECT * FROM Customers;
 SELECT * FROM Orders;
 SELECT * FROM OrderDetails;
 
--- Problem 34
+-- Problem 35
+-- Show all orders made on the last day of the month.
+-- Order by EmployeeID and OrderID
+
+-- One way to do it:
+SELECT 
+	EmployeeID
+	,OrderID
+	,OrderDate
+FROM Orders
+WHERE MONTH(OrderDate) = 1 AND DAY(OrderDate) = 31
+	OR MONTH(OrderDate) = 2 AND DAY(OrderDate) = 28
+	OR MONTH(OrderDate) = 2 AND DAY(OrderDate) = 29
+	OR MONTH(OrderDate) = 3 AND DAY(OrderDate) = 31
+--						.
+--						.
+--						.
+--					(and so on)
+ORDER BY EmployeeID, OrderID
+;
+
+-- Another way using EOMONTH()
+SELECT 
+	EmployeeID
+	,OrderID
+	,OrderDate
+FROM Orders
+WHERE DAY(OrderDate) = DAY(EOMONTH(OrderDate))
+ORDER BY EmployeeID, OrderID
+
+-- 
+
 
